@@ -232,6 +232,7 @@ suite('CacheDriver', function() {
         var otherAuthority = 'someOtherAuthority';
         var responseOptions = { authority : otherAuthority, mrrt : true, resource : responses[0].resource };
         var differentAuthorityResponse = util.createResponse(responseOptions, 21);
+        // @ts-ignore
         delete responseOptions.authority;
         var extraMRRTResponse = util.createResponse(responseOptions, 21);
         responses.push(extraMRRTResponse.cachedResponse);
@@ -240,7 +241,7 @@ suite('CacheDriver', function() {
 
         // order is important here.  We want to ensure that when we add the second MRRT it has only updated
         // the refresh token of the entries with the same authority.
-        // update: with mega refresh token(cross tenant RT), refresh token of the entry will be updated if there is a match with userId, clientId. 
+        // update: with mega refresh token(cross tenant RT), refresh token of the entry will be updated if there is a match with userId, clientId.
         var cacheDriver = new CacheDriver(fakeTokenRequest._callContext, otherAuthority, differentAuthorityResponse.resource, differentAuthorityResponse.clientId, memCache, unexpectedRefreshFunction);
         cacheDriver.add(differentAuthorityResponse.decodedResponse, function(err: any) {
           assert(!err, 'Unexpected err adding entry with different authority.');
